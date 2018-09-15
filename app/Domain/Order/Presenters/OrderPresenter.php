@@ -25,7 +25,7 @@ class OrderPresenter extends FractalPresenter
      */
     public function getTransformer()
     {
-        return new OrderTransformer();
+        return new \App\Domain\Order\Transformers\OrderTransformer();
     }
 
 

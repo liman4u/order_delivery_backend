@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('distance',75);
             $table->string('status',25);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index([
                 'distance',

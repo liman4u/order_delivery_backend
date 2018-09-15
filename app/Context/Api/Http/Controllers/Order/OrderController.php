@@ -11,6 +11,9 @@ namespace App\Context\Api\Http\Controllers\Order;
 use App\Context\Api\Http\Traits\ResponseTrait;
 use App\Core\Http\Controllers\Controller;
 use App\Domain\Order\Repositories\OrderRepository;
+use App\Domain\Order\Validators\OrderValidator;
+use Illuminate\Http\Request;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class OrderController
@@ -34,7 +37,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of orders
      *
      * @return Response
      */
@@ -43,5 +46,7 @@ class OrderController extends Controller
         return $this->respondWithArray($this->repository->all());
 
     }
+
+   
 
 }

@@ -61,7 +61,7 @@ trait ResponseTrait
      */
     protected function respondWithItem($item,$statusCode = Response::HTTP_CREATED)
     {
-        return response()->json([$item['data']], $statusCode);
+        return response()->json($item['data'], $statusCode);
     }
     /**
      * Return a json response from the application
@@ -72,7 +72,7 @@ trait ResponseTrait
      */
     protected function respondWithArray(array $array)
     {
-        return response()->json([$array['data']], $this->statusCode);
+        return response()->json($array['data'], $this->statusCode);
     }
 
 

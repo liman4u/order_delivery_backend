@@ -16,7 +16,12 @@
 $router->group(['prefix' => 'v1'], function ($router) {
 
     //Orders
-
+    $router->group([
+        'prefix' => 'order',
+        'namespace' => 'Order'
+    ], function ($router) {
+        $router->get('/', 'OrderController@index');
+    });
 
 
 });
