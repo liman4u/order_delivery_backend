@@ -21,6 +21,7 @@ $router->group(['prefix' => 'v1'], function ($router) {
         'namespace' => 'Order'
     ], function ($router) {
         $router->get('/', 'OrderController@index');
+        $router->post('/', 'OrderController@store');
     });
 
 
