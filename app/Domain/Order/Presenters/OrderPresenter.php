@@ -9,6 +9,7 @@
 namespace App\Domain\Order\Presenters;
 
 use App\Domain\Order\Transformers\OrderTransformer;
+use League\Fractal\TransformerAbstract;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
@@ -25,7 +26,7 @@ class OrderPresenter extends FractalPresenter
      */
     public function getTransformer()
     {
-        return new \App\Domain\Order\Transformers\OrderTransformer();
+        return new OrderTransformer();
     }
 
 

@@ -22,6 +22,7 @@ $router->group(['prefix' => 'v1'], function ($router) {
     ], function ($router) {
         $router->get('/', 'OrderController@index');
         $router->post('/', 'OrderController@store');
+        $router->put('/{id}', 'OrderController@update');
     });
 
 

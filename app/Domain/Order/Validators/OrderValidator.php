@@ -20,9 +20,12 @@ class OrderValidator extends LaravelValidator
 
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'origin.*' => 'required | regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/',
-            'destination.*' => 'required | regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/',
-         ]
+            'origin' => 'required',
+            'destination' => 'required',
+         ],
+        ValidatorInterface::RULE_UPDATE => [
+            'status' => 'required|string'
+        ]
     ];
 
 }

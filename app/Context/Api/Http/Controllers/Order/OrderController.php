@@ -16,7 +16,7 @@ use App\Domain\Order\Validators\OrderValidator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Prettus\Validator\Contracts\ValidatorInterface;
-use Valerian\GoogleDistanceMatrix\GoogleDistanceMatrix;
+use Log;
 
 /**
  * Class OrderController
@@ -71,20 +71,35 @@ class OrderController extends Controller
             $end_latitude = $destination[0];
             $end_longitude =  $destination[1];
 
-            $input = array();
-            $input['start_latitude'] = $start_latitude;
-            $input['start_longitude'] = $start_longitude;
+            Log::info("Start Latitude : " . $start_latitude);
+            Log::info("Start Longitude : " . $start_longitude);
 
-            $input['end_latitude'] = $end_latitude;
-            $input['end_longitude'] = $end_longitude;
+            Log::info("End Latitude : " . $end_latitude);
+            Log::info("End Longitude : " . $end_longitude);
 
-            //set UNASSIGN as default status
-            $input['status'] = "UNASSIGN";
+            if($this->isValidLatitude($start_latitude) && $this->isValidLongitude($start_longitude) && $this->isValidLatitude($end_latitude) && $this->isValidLongitude($end_longitude)) {
 
-            $input['distance'] = $this->getDistance($start_latitude,$start_longitude,$end_latitude,$end_longitude);
+                $input = array();
+                $input['start_latitude'] = $start_latitude;
+                $input['start_longitude'] = $start_longitude;
+
+                $input['end_latitude'] = $end_latitude;
+                $input['end_longitude'] = $end_longitude;
+
+                //set UNASSIGN as default status
+                $input['status'] = "UNASSIGN";
+
+                $input['distance'] = $this->getDistance($start_latitude, $start_longitude, $end_latitude, $end_longitude);
 
 
-            return $this->respondWithItem($this->repository->store($input));
+                return $this->respondWithItem($this->repository->store($input));
+
+            }else {
+
+                $response['data'] = ["error"=>"INVALID_PARAMETER(S)"];
+
+                return $this->failureResponse($response);
+            }
 
 
         } catch (\Exception $exception) {
@@ -95,6 +110,42 @@ class OrderController extends Controller
         }
 
     }
+
+
+    /**
+     *
+     * Take order action
+     *
+     * @param OrderValidator $validator
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(OrderValidator $validator,Request $request,$id)
+    {
+
+        $this->validate($request,$validator->getRules(ValidatorInterface::RULE_UPDATE));
+
+        try{
+
+            $input = array();
+            $input['status'] = strtoupper($request->input('status'));
+
+            $this->repository->update($input,$id);
+
+            $response['data'] = ["status"=>"SUCCESS"];
+
+            return $this->respondWithItem($response);
+
+        } catch (\Exception $exception) {
+
+            return $this->failureResponse($exception->getMessage());
+
+
+        }
+
+    }
+
 
     /**
      * Get distance from google distance matrix API
@@ -131,8 +182,31 @@ class OrderController extends Controller
             $distance = 0;
         }
 
+        Log::info("Distance retrieved : ".$distance);
+
 
         return $distance;
+    }
+
+    public function isValidLatitude($latitude)
+    {
+
+        if (preg_match("/^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/", $latitude)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public function isValidLongitude($longitude)
+    {
+        if(preg_match("/^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}$/",
+            $longitude)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

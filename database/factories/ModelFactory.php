@@ -11,9 +11,12 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(\App\Domain\Order\Models\Order::class,
+    function (Faker\Generator $faker) {
+
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
+        'origin' => "[$faker->latitude,$faker->longitude]",
+        'destination' => "[$faker->latitude,$faker->longitude]"
     ];
+
 });

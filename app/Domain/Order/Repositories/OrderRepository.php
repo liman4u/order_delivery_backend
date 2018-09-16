@@ -10,6 +10,7 @@ namespace App\Domain\Order\Repositories;
 
 use App\Domain\Order\Exception\OrderAlreadyBeenTakenException;
 use App\Domain\Order\Models\Order;
+use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
@@ -53,9 +54,10 @@ class OrderRepository extends BaseRepository
      * Take order action
      *
      * @param array $inputs
+     * @param $id
      * @return mixed
      */
-    public function update(array $inputs, $id)
+    public function update(array $inputs,$id)
     {
         //Check if Order was already taken
         $this->checkOrder($id);
@@ -70,7 +72,7 @@ class OrderRepository extends BaseRepository
      * @param $id
      * @throws OrderAlreadyBeenTakenException
      */
-    public function checkOrder($id)
+    public function checkOrder(int $id)
     {
 
         $order = $this->skipPresenter()->find($id);
