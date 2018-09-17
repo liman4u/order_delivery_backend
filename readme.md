@@ -43,7 +43,7 @@ sh ./start.sh
 ```
 - Tests can also be run separately by running[from the project's root folder] "composer test" when the docker container is up and running
 
-- In case the install.sh does not seem to be runnable, use chmod 400 install.sh
+- In case the start.sh does not seem to be runnable, use chmod 400 start.sh
 
  **Features**
 
