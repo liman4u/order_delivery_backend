@@ -11,6 +11,7 @@ namespace App\Context\Api\Http\Controllers\Order;
 use App\Context\Api\Http\Traits\ResponseTrait;
 use App\Core\Http\Controllers\Controller;
 use App\Domain\Order\Exception\OrderAlreadyBeenTakenException;
+use App\Domain\Order\Exception\OrderNotFoundException;
 use App\Domain\Order\Repositories\OrderRepository;
 use App\Domain\Order\Validators\OrderValidator;
 use Illuminate\Http\Request;
@@ -92,7 +93,7 @@ class OrderController extends Controller
                 $input['distance'] = $this->getDistance($start_latitude, $start_longitude, $end_latitude, $end_longitude);
 
 
-                return $this->respondWithItem($this->repository->store($input));
+                return $this->respondWithItem($this->repository->store($input),Response::HTTP_OK);
 
             }else {
 
@@ -135,9 +136,19 @@ class OrderController extends Controller
 
             $response['data'] = ["status"=>"SUCCESS"];
 
-            return $this->respondWithItem($response);
+            return $this->respondWithItem($response,Response::HTTP_OK);
 
-        } catch (\Exception $exception) {
+        }catch (OrderAlreadyBeenTakenException $exception) {
+
+            return $this->failureResponse($exception->getMessage(),Response::HTTP_CONFLICT);
+
+
+        }catch (OrderNotFoundException $exception) {
+
+            return $this->failureResponse($exception->getMessage(),Response::HTTP_NOT_FOUND);
+
+
+        }catch (\Exception $exception) {
 
             return $this->failureResponse($exception->getMessage());
 

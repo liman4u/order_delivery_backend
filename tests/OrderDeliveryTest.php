@@ -31,7 +31,7 @@ class OrderDeliveryTest extends \TestCase
 
         $response
             ->receiveJson()
-            ->seeStatusCode(Response::HTTP_CREATED)
+            ->seeStatusCode(Response::HTTP_OK)
             ->seeJsonStructure(
                     [
                         'id',
@@ -116,5 +116,99 @@ class OrderDeliveryTest extends \TestCase
 
             ]);
     }
+
+
+    /**
+     * Test for can take order
+     */
+    public function testCanTakeOrder()
+    {
+
+        $response = $this->put("/api/v1/order/1?status=taken" );
+
+        $response
+            ->receiveJson()
+            ->seeStatusCode(Response::HTTP_OK)
+            ->seeJsonContains([
+                'status' => "SUCCESS"
+            ]);
+    }
+
+    /**
+     * Test for can not  take order with empty status
+     */
+    public function testCanNotTakeOrderWithEmptyStatus()
+    {
+
+        $response = $this->put("/api/v1/order/1?status=" );
+
+        $response
+            ->receiveJson()
+            ->seeStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->seeJsonStructure([
+                'errors' =>
+                    [
+                        'status'
+                    ]
+
+            ]);
+    }
+
+
+    /**
+     * Test for can not  take order with invalid id
+     */
+    public function testCanNotTakeOrderWithInvalidId()
+    {
+
+        $response = $this->put("/api/v1/order/100?status=taken" );
+
+        $response
+            ->receiveJson()
+            ->seeStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->seeJsonStructure([
+                    'error'
+            ]);
+    }
+
+
+    /**
+     * Test for can not  take order already taken
+     */
+    public function testCanNotTakeOrderAlreadyTaken()
+    {
+
+        $response = $this->put("/api/v1/order/2?status=taken" );
+
+        $response
+            ->receiveJson()
+            ->seeStatusCode(Response::HTTP_CONFLICT)
+            ->seeJsonContains([
+                    'error' => "ORDER_ALREADY_BEEN_TAKEN"
+            ]);
+    }
+
+    /**
+     * Test for can get order list
+     */
+    public function testCanGetOrderList(){
+
+        $response = $this->get("/api/v1/order" );
+
+        $response
+            ->receiveJson()
+            ->seeStatusCode(Response::HTTP_OK)
+            ->seeJsonStructure([
+                [
+                    'id',
+                    'distance',
+                    'status'
+                 ]
+            ]);
+
+
+
+    }
+
 
 }

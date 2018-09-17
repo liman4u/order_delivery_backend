@@ -9,8 +9,10 @@
 namespace App\Domain\Order\Repositories;
 
 use App\Domain\Order\Exception\OrderAlreadyBeenTakenException;
+use App\Domain\Order\Exception\OrderNotFoundException;
 use App\Domain\Order\Models\Order;
 use Illuminate\Database\Eloquent\Model;
+use Mockery\Exception;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
@@ -75,11 +77,14 @@ class OrderRepository extends BaseRepository
     public function checkOrder(int $id)
     {
 
-        $order = $this->skipPresenter()->find($id);
+           $order = $this->skipPresenter(true)->find($id);
 
-        if($order->status == "TAKEN"){
-            throw new OrderAlreadyBeenTakenException();
-        }
+
+           if($order->status == "TAKEN"){
+               throw new OrderAlreadyBeenTakenException();
+           }
+
+
     }
     
 }
