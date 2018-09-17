@@ -55,7 +55,7 @@ The API  conformed to REST practices and  provide the following functionality:
 
  **Endpoints**
 
-- The postman documentation link is https://documenter.getpostman.com/view/3189851/RWaLvSng
+- The postman documentation link is at https://documenter.getpostman.com/view/3189851/RWaLvSng
 
 - This application conform to the specified endpoint structure given and return the HTTP status codes appropriate to each operation.  
 
