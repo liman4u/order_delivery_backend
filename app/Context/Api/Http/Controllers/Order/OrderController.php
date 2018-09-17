@@ -45,9 +45,9 @@ class OrderController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->respondWithArray($this->repository->all());
+        return $this->respondWithArray($this->repository->paginate($request->input('limit')));
 
     }
 

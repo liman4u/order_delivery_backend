@@ -193,7 +193,7 @@ class OrderDeliveryTest extends \TestCase
      */
     public function testCanGetOrderList(){
 
-        $response = $this->get("/api/v1/order" );
+        $response = $this->get("/api/v1/order?page=1&limit=5" );
 
         $response
             ->receiveJson()
