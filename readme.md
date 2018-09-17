@@ -15,6 +15,8 @@
 
 - Testing was done with PhpUnit 
 
+- Used DDD (Domain-Driven Design) approach
+
  **Main Packages**
 
 - This can be found in the composer.json in the root directory of the project
