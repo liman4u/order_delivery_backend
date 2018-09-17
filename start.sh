@@ -4,8 +4,6 @@ docker-compose down
 
 composer install
 
-cp .env.example .env
-
 docker-compose up -d --force-recreate
 
 >&2 echo "Waiting for MySql to run. Please wait....."
